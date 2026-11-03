@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f4ef" />
+    <meta name="description" content="SKINAA — science-led skincare, made personal." />
+    <title>SKINAA — Skin, in motion</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="announcement" role="status">
+      <span>Free shipping over ₹799</span><i></i><span>Dermatologist-developed care</span><i></i><span>Made for real skin days</span>
+    </div>
+
+    <header class="site-header" id="top">
+      <a class="brand" href="#top" aria-label="SKINAA home"><span class="brand-mark">✦</span>SKINAA</a>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a href="#journey">Shop by concern</a>
+        <a href="#formula">The formula</a>
+        <a href="#routine">Build a routine</a>
+        <a href="https://shop.skinaa.com/pages/our-doctors" target="_blank" rel="noreferrer">Our doctors ↗</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button search-toggle" aria-label="Search products" title="Search products">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="5.7"></circle><path d="m15.1 15.1 4.3 4.3"></path></svg>
+        </button>
+        <a class="bag icon-button" href="https://shop.skinaa.com/cart" target="_blank" rel="noreferrer" aria-label="Open bag" title="Open bag">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.4 8.2h13.2l-.9 11H6.3z"></path><path d="M8.7 9V6.5a3.3 3.3 0 0 1 6.6 0V9"></path></svg><span id="cartCount">0</span>
+        </a>
+        <button class="menu-toggle icon-button" aria-label="Open menu" aria-expanded="false" title="Open menu"><span></span><span></span></button>
+      </div>
+      <div class="search-panel" hidden>
+        <label for="siteSearch">Find a formula</label>
+        <div><input id="siteSearch" type="search" placeholder="Try “sunscreen” or “glow”" /><a id="searchGo" href="https://shop.skinaa.com/search" target="_blank" rel="noreferrer">Search ↗</a></div>
+      </div>
+      <nav class="mobile-nav" aria-label="Mobile navigation" hidden>
+        <a href="#journey">Shop by concern</a><a href="#formula">The formula</a><a href="#routine">Build a routine</a><a href="https://shop.skinaa.com/collections/all" target="_blank" rel="noreferrer">Shop all ↗</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-heading">
+        <img class="hero-image" src="assets/skinaa-hero.png" alt="Blue serum bottle and white skincare tube among soft flowers and amber gel droplets" fetchpriority="high" />
+        <div class="hero-glow hero-glow-one"></div><div class="hero-glow hero-glow-two"></div>
+        <div class="hero-copy">
+          <p class="eyebrow reveal">The skin intelligence edit <span>01—26</span></p>
+          <h1 id="hero-heading" class="reveal">Meet your skin<br /><em>where it is.</em></h1>
+          <p class="hero-text reveal">Science-led essentials for the beautifully inconsistent business of living in your skin.</p>
+          <div class="hero-actions reveal"><a class="button button-dark" href="#journey">Find your match <span>↓</span></a><a class="text-link" href="#formula">Explore the formula <span>↗</span></a></div>
+        </div>
+        <aside class="hero-note glass-card reveal" aria-label="Featured product">
+          <span class="mini-tag">Daily essential</span>
+          <strong>Aqua SPF 50+</strong>
+          <p>Hydration, defence, zero white cast.</p>
+          <a href="https://shop.skinaa.com/products/aqua-sunscreen-gel-spf-50-pa-3plus" target="_blank" rel="noreferrer">Meet the UV veil ↗</a>
+        </aside>
+        <div class="hero-orbit orbit-a" aria-hidden="true">NIACINAMIDE <span>✦</span> HYALURONIC</div>
+        <div class="hero-scroll"><span>Scroll to begin</span><b></b></div>
+      </section>
+
+      <section class="trust-strip" aria-label="Brand proof points">
+        <div><span class="trust-symbol">✳</span><strong>Dermatologist<br />developed</strong></div>
+        <div><span class="trust-number">4L+</span><p>happy skin stories<br />and counting</p></div>
+        <div><span class="trust-symbol">⌁</span><strong>Intentional,<br />evidence-led formulas</strong></div>
+        <a href="https://shop.skinaa.com/collections/all" target="_blank" rel="noreferrer">Shop the edit <span>↗</span></a>
+      </section>
+
+      <section class="journey section" id="journey" aria-labelledby="journey-heading">
+        <div class="section-heading">
+          <p class="eyebrow">A little less guesswork <span>02</span></p>
+          <h2 id="journey-heading">Where do you want<br /><em>your skin to go?</em></h2>
+        </div>
+        <div class="journey-layout">
+          <div class="concern-list" role="tablist" aria-label="Skin concerns">
+            <button class="concern active" role="tab" aria-selected="true" data-concern="clarity"><span>01</span>Calm the breakout cycle <b>↗</b></button>
+            <button class="concern" role="tab" aria-selected="false" data-concern="glow"><span>02</span>Bring back the glow <b>↗</b></button>
+            <button class="concern" role="tab" aria-selected="false" data-concern="shield"><span>03</span>Protect &amp; prevent <b>↗</b></button>
+            <button class="concern" role="tab" aria-selected="false" data-concern="even"><span>04</span>Even out the story <b>↗</b></button>
+          </div>
+          <div class="match-card" id="matchCard" role="tabpanel">
+            <div class="match-orb"><div class="orb-core"></div><i class="bubble bubble-one"></i><i class="bubble bubble-two"></i><span>+<br />B3</span></div>
+            <div class="match-copy"><p class="mini-tag" id="matchLabel">For breakout-prone days</p><h3 id="matchName">Clarity, without the stripping.</h3><p id="matchText">A barrier-first pairing that clears the noise, then keeps hydration close.</p><a id="matchLink" class="under-link" href="https://shop.skinaa.com/products/moisturizing-gel-oily-skin" target="_blank" rel="noreferrer">See your edit <span>→</span></a></div>
+            <p class="match-footer" id="matchFooter">Niacinamide + gentle cleansing</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="formula section" id="formula" aria-labelledby="formula-heading">
+        <div class="formula-top">
+          <p class="eyebrow">Feel the science <span>03</span></p>
+          <div><h2 id="formula-heading">A formula you can<br /><em>move through.</em></h2><p>Explore the layers inside our everyday UV veil. Drag the bottle, or choose a callout.</p></div>
+        </div>
+        <div class="formula-stage" id="formulaStage">
+          <div class="stage-copy left-copy"><span>01</span><strong>Water-light</strong><p>Comfortable daily wear with no heavy finish.</p></div>
+          <div class="stage-copy right-copy"><span>02</span><strong>Barrier-minded</strong><p>Hyaluronic acid and niacinamide support a hydrated feel.</p></div>
+          <div class="product-shadow"></div>
+          <div class="product-model" id="productModel" aria-label="Interactive stylized sunscreen bottle" role="img">
+            <div class="model-cap"></div><div class="model-neck"></div><div class="model-body"><div class="model-label"><span>SKINAA</span><b>AQUA<br />VEIL</b><small>SPF 50+</small></div></div><div class="model-side"></div>
+          </div>
+          <button class="hotspot hotspot-a active" data-detail="protection" aria-label="Show broad spectrum protection detail"><i>+</i><span>UV veil</span></button>
+          <button class="hotspot hotspot-b" data-detail="hydration" aria-label="Show hydration detail"><i>+</i><span>Hydration</span></button>
+          <button class="hotspot hotspot-c" data-detail="finish" aria-label="Show zero white cast detail"><i>+</i><span>Finish</span></button>
+          <div class="formula-detail" aria-live="polite"><p class="mini-tag" id="detailNumber">01 / PROTECTION</p><h3 id="detailTitle">A wearable layer of defence.</h3><p id="detailText">Broad-spectrum SPF 50+ with a weightless gel texture—made to make daily protection an easy yes.</p><a href="https://shop.skinaa.com/products/aqua-sunscreen-gel-spf-50-pa-3plus" target="_blank" rel="noreferrer">See product details ↗</a></div>
+          <div class="rotation-control"><label for="rotation">Rotate the bottle</label><input id="rotation" type="range" min="-28" max="28" value="0" /></div>
+        </div>
+      </section>
+
+      <section class="editorial section" aria-labelledby="editorial-heading">
+        <div class="editorial-image"><div class="editorial-liquid"></div><div class="editorial-bottle"><span>SKINAA</span><b>VITAMIN C</b><small>FACE WASH</small></div><p>fresh start<br />energy</p></div>
+        <div class="editorial-copy">
+          <p class="eyebrow">Not another routine <span>04</span></p>
+          <h2 id="editorial-heading">Care that fits <em>the day you’re having.</em></h2>
+          <p>From a 30-second morning reset to the “my skin needs a minute” evening, every SKINAA step gives you room to show up as you are.</p>
+          <div class="quote-card"><span>“</span><p>Consistency starts with products you actually want to use.</p><b>— The SKINAA point of view</b></div>
+          <a class="button button-outline" href="https://shop.skinaa.com/products/vitamin-c-face-wash" target="_blank" rel="noreferrer">Start fresh <span>↗</span></a>
+        </div>
+      </section>
+
+      <section class="routine section" id="routine" aria-labelledby="routine-heading">
+        <div class="routine-intro">
+          <p class="eyebrow">Make it yours <span>05</span></p><h2 id="routine-heading">Build a little<br /><em>ritual.</em></h2>
+          <p>Tap the steps you want to keep close. We’ll hold the sequence for you.</p>
+        </div>
+        <div class="routine-builder">
+          <div class="time-switch" role="group" aria-label="Routine time"><button class="active" data-time="AM">AM</button><button data-time="PM">PM</button></div>
+          <div class="routine-steps">
+            <button class="routine-step selected" data-product="cleanser" data-price="341" aria-pressed="true"><span class="step-icon cleanser-icon">◒</span><span class="step-info"><small>STEP 01</small><strong>Cleanse</strong><em>Vitamin C Face Wash</em></span><span class="step-add">✓</span></button>
+            <button class="routine-step" data-product="treat" data-price="476" aria-pressed="false"><span class="step-icon treat-icon">✦</span><span class="step-info"><small>STEP 02</small><strong>Treat</strong><em>Ocevia Brightening Cream</em></span><span class="step-add">+</span></button>
+            <button class="routine-step selected" data-product="moisturize" data-price="338" aria-pressed="true"><span class="step-icon moisture-icon">◉</span><span class="step-info"><small>STEP 03</small><strong>Moisturize</strong><em>Niacinamide Gel Moisturizer</em></span><span class="step-add">✓</span></button>
+            <button class="routine-step selected" data-product="protect" data-price="489" aria-pressed="true"><span class="step-icon protect-icon">☀</span><span class="step-info"><small>STEP 04</small><strong>Protect</strong><em>Aqua SPF 50+ Gel</em></span><span class="step-add">✓</span></button>
+          </div>
+          <div class="routine-summary"><div><span id="routineCount">3-step morning ritual</span><strong id="routinePrice">₹1,168</strong></div><p id="routineAdvice">A simple, barrier-friendly base for every day.</p><button class="button button-dark" id="saveRoutine">Save this routine <span>→</span></button><small>We’ll take you to the SKINAA shop to complete your edit.</small></div>
+        </div>
+      </section>
+
+      <section class="results section" aria-labelledby="results-heading">
+        <div class="results-heading"><p class="eyebrow">Skin, in real life <span>06</span></p><h2 id="results-heading">The proof is in<br /><em>the ritual.</em></h2><p>Use the slider to explore the idea behind a well-layered morning routine.</p></div>
+        <div class="compare-wrap">
+          <div class="compare-caption compare-before"><span>before</span><p>Unprotected,<br />dehydrated feel</p></div>
+          <div class="compare-caption compare-after"><span>after</span><p>Hydrated +<br />protected ritual</p></div>
+          <div class="comparison" id="comparison" aria-label="Illustrative before and after skin routine comparison">
+            <div class="comparison-after"><div class="skin-canvas good-skin"><div class="skin-portrait"></div><i class="shine s1"></i><i class="shine s2"></i><i class="shine s3"></i></div></div>
+            <div class="comparison-before" id="beforeLayer"><div class="skin-canvas dry-skin"><div class="skin-portrait"></div><i class="spot p1"></i><i class="spot p2"></i><i class="spot p3"></i></div></div>
+          </div>
+          <label class="compare-slider" for="compareRange"><span class="visually-hidden">Compare before and after</span><input id="compareRange" type="range" min="0" max="100" value="51" /><b aria-hidden="true">↔</b></label>
+        </div>
+        <p class="results-note">Illustrative routine visual. Individual skin and results vary; explore product pages for customer reviews and full details.</p>
+      </section>
+
+      <section class="product-edit section" aria-labelledby="edit-heading">
+        <div class="edit-heading"><p class="eyebrow">The starting line <span>07</span></p><h2 id="edit-heading">Three reasons to<br /><em>begin today.</em></h2></div>
+        <div class="product-grid">
+          <article class="product-card blue-card"><div class="card-product tube"><span>SKINAA</span><b>AQUA<br />SPF 50+</b><small>50ml</small></div><p class="card-index">01 — DAILY DEFENCE</p><h3>Aqua SPF 50+ Gel</h3><p>Lightweight broad-spectrum protection with hyaluronic acid.</p><div class="card-footer"><strong>₹489</strong><a href="https://shop.skinaa.com/products/aqua-sunscreen-gel-spf-50-pa-3plus" target="_blank" rel="noreferrer" aria-label="Shop Aqua SPF 50 Gel">Shop ↗</a></div></article>
+          <article class="product-card yellow-card"><div class="card-product wash"><span>SKINAA</span><b>VITAMIN C</b><small>FACE WASH</small></div><p class="card-index">02 — FRESH START</p><h3>Vitamin C Face Wash</h3><p>An everyday cleanse with bright, easy energy.</p><div class="card-footer"><strong>₹341</strong><a href="https://shop.skinaa.com/products/vitamin-c-face-wash" target="_blank" rel="noreferrer" aria-label="Shop Vitamin C Face Wash">Shop ↗</a></div></article>
+          <article class="product-card green-card"><div class="card-product jar"><span>SKINAA</span><b>NIACINAMIDE</b><small>GEL MOISTURIZER</small></div><p class="card-index">03 — BALANCED BASE</p><h3>Niacinamide Gel</h3><p>A breathable hit of hydration for your barrier.</p><div class="card-footer"><strong>₹338</strong><a href="https://shop.skinaa.com/products/moisturizing-gel-oily-skin" target="_blank" rel="noreferrer" aria-label="Shop Niacinamide Gel Moisturizer">Shop ↗</a></div></article>
+        </div>
+        <a class="button button-outline centre-button" href="https://shop.skinaa.com/collections/all" target="_blank" rel="noreferrer">Discover all care <span>↗</span></a>
+      </section>
+
+      <section class="newsletter section" aria-labelledby="newsletter-heading">
+        <div class="newsletter-orb"><i></i><i></i><i></i><span>✦</span></div><div><p class="eyebrow">A softer signal <span>08</span></p><h2 id="newsletter-heading">Skincare intel,<br /><em>minus the noise.</em></h2></div>
+        <form class="newsletter-form" id="newsletterForm"><label for="email">A note in your inbox, occasionally.</label><div><input id="email" type="email" required placeholder="Your email address" /><button class="button button-dark" type="submit">I’m in <span>→</span></button></div><small>No spam. Just skin wisdom, new launches, and a good offer when it counts.</small></form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand" href="#top"><span class="brand-mark">✦</span>SKINAA</a><p>Made for the skin you live in.</p>
+      <div class="footer-links"><div><span>SHOP</span><a href="https://shop.skinaa.com/collections/all" target="_blank" rel="noreferrer">All products</a><a href="https://shop.skinaa.com/collections/sunscreen" target="_blank" rel="noreferrer">Sunscreen</a><a href="https://shop.skinaa.com/collections/face-serums" target="_blank" rel="noreferrer">Face serums</a></div><div><span>CARE</span><a href="https://shop.skinaa.com/pages/our-doctors" target="_blank" rel="noreferrer">Our doctors</a><a href="https://shop.skinaa.com/blogs/news" target="_blank" rel="noreferrer">Skin journal</a><a href="https://shop.skinaa.com/pages/contact" target="_blank" rel="noreferrer">Contact</a></div></div>
+      <p class="footer-bottom">© 2026 SKINAA. This interactive redesign concept links to the live Shopify catalogue.</p>
+    </footer>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
