@@ -37,7 +37,7 @@ app.get('/api/catalogue', async (_req, res, nextHandler) => {
   try {
     const database = await connectToDatabase();
     const products = database ? await Product.find({}).lean() : catalogue;
-    res.json({ products, source: database ? 'mongodb' : 'fallback-catalogue' });
+    res.json({ products: products.map(product => ({ ...product, shopUrl: `/products/${encodeURIComponent(product.slug)}` })), source: database ? 'mongodb' : 'fallback-catalogue' });
   } catch (error) {
     nextHandler(error);
   }

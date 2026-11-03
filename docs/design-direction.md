@@ -9,7 +9,7 @@ The homepage pairs botanical green and ivory with editorial typography and dimen
 - Concern choices update the story, ingredient cue and destination.
 - A CSS 3D cylinder supports full rotation through a keyboard-accessible range control. Ingredient buttons explain the formula.
 - AM/PM routines adjust the available steps, update totals, persist locally and expose individual product links. PM excludes sunscreen.
-- A mobile shopping bar keeps discovery accessible. Checkout remains with the official Shopify store; no simulated cart quantity or checkout is presented.
+- A mobile shopping bar keeps discovery accessible. Product discovery remains within this application. Product detail routes are local; checkout is not yet available.
 
 ## Motion and performance
 
@@ -21,4 +21,4 @@ Production build passed. Browser checks at 1440px desktop and 390px mobile verif
 
 ## Conversion measurement
 
-Expected benefits are easier product discovery, shorter paths to product pages, and better understanding of routines. Conversion improvements have not been measured. Evaluate hero-to-product click-through, filter usage, routine saves and Shopify checkout conversion against the previous design before claiming uplift.
+Expected benefits are easier product discovery, shorter paths to product pages, and better understanding of routines. Conversion improvements have not been measured. Evaluate hero-to-product click-through, filter usage, routine saves and checkout conversion once checkout is integrated against the previous design before claiming uplift.

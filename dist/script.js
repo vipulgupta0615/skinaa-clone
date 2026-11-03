@@ -1,8 +1,8 @@
 const concernData = {
-  clarity: { label: 'For breakout-prone days', name: 'Clarity, without the stripping.', text: 'A barrier-first pairing that clears the noise, then keeps hydration close.', footer: 'Niacinamide + gentle cleansing', link: 'https://shop.skinaa.com/products/moisturizing-gel-oily-skin', color: '#1834ac' },
-  glow: { label: 'For your glow era', name: 'Brighten the pace, not the pressure.', text: 'A fresh, vitamin-forward reset designed to make your everyday cleanse feel like a beginning.', footer: 'Vitamin C + everyday ritual', link: 'https://shop.skinaa.com/products/vitamin-c-face-wash', color: '#d47a3c' },
-  shield: { label: 'For daily exposure', name: 'Make protection the easy part.', text: 'A featherlight sunscreen step that lets you get on with your day—no white cast, no compromise.', footer: 'SPF 50+ + hydration', link: 'https://shop.skinaa.com/products/aqua-sunscreen-gel-spf-50-pa-3plus', color: '#265dc5' },
-  even: { label: 'For uneven-looking tone', name: 'Care for every chapter of your skin.', text: 'A considered brightening step to pair with patient, gentle consistency.', footer: 'Brightening care + barrier support', link: 'https://shop.skinaa.com/products/ocevia-skin-brightening-cream', color: '#995492' }
+  clarity: { label: 'For breakout-prone days', name: 'Clarity, without the stripping.', text: 'A barrier-first pairing that clears the noise, then keeps hydration close.', footer: 'Niacinamide + gentle cleansing', link: '/products/moisturizing-gel-oily-skin', color: '#1834ac' },
+  glow: { label: 'For your glow era', name: 'Brighten the pace, not the pressure.', text: 'A fresh, vitamin-forward reset designed to make your everyday cleanse feel like a beginning.', footer: 'Vitamin C + everyday ritual', link: '/products/vitamin-c-face-wash', color: '#d47a3c' },
+  shield: { label: 'For daily exposure', name: 'Make protection the easy part.', text: 'A featherlight sunscreen step that lets you get on with your day—no white cast, no compromise.', footer: 'SPF 50+ + hydration', link: '/products/aqua-sunscreen-gel-spf-50-pa-3plus', color: '#265dc5' },
+  even: { label: 'For uneven-looking tone', name: 'Care for every chapter of your skin.', text: 'A considered brightening step to pair with patient, gentle consistency.', footer: 'Brightening care + barrier support', link: '/products/ocevia-skin-brightening-cream', color: '#995492' }
 };
 
 const details = {
@@ -58,10 +58,10 @@ document.getElementById('formulaStage').addEventListener('pointermove', event =>
 
 const prices = { cleanser: 341, treat: 476, moisturize: 338, protect: 489 };
 const routineLinks = {
-  cleanser: 'https://shop.skinaa.com/products/vitamin-c-face-wash',
-  treat: 'https://shop.skinaa.com/products/ocevia-skin-brightening-cream',
-  moisturize: 'https://shop.skinaa.com/products/moisturizing-gel-oily-skin',
-  protect: 'https://shop.skinaa.com/products/aqua-sunscreen-gel-spf-50-pa-3plus'
+  cleanser: '/products/vitamin-c-face-wash',
+  treat: '/products/ocevia-skin-brightening-cream',
+  moisturize: '/products/moisturizing-gel-oily-skin',
+  protect: '/products/aqua-sunscreen-gel-spf-50-pa-3plus'
 };
 function updateRoutine() {
   const selected = [...document.querySelectorAll('.routine-step.selected')];
@@ -100,7 +100,7 @@ const searchToggle = document.querySelector('.search-toggle');
 const searchPanel = document.querySelector('.search-panel');
 searchToggle.addEventListener('click', () => { searchPanel.hidden = !searchPanel.hidden; if (!searchPanel.hidden) document.getElementById('siteSearch').focus(); });
 document.getElementById('siteSearch').addEventListener('input', event => {
-  document.getElementById('searchGo').href = `https://shop.skinaa.com/search?q=${encodeURIComponent(event.target.value)}`;
+  document.getElementById('searchGo').href = `/search?q=${encodeURIComponent(event.target.value)}`;
 });
 const menuToggle = document.querySelector('.menu-toggle');
 const mobileNav = document.querySelector('.mobile-nav');
