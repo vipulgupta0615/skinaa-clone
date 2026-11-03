@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import ProductStage from './ProductStage';
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000').replace(/\/$/, '');
 
@@ -41,9 +42,9 @@ function Toast({ message }) {
 export default function HomeExperience() {
   const [activeConcern, setActiveConcern] = useState('clarity');
   const [activeDetail, setActiveDetail] = useState('protection');
-  const [rotation, setRotation] = useState(0);
   const [selectedSteps, setSelectedSteps] = useState(new Set(['cleanser', 'moisturize', 'protect']));
   const [timeOfDay, setTimeOfDay] = useState('AM');
+  const [motionPaused, setMotionPaused] = useState(false);
   const [heroTurn, setHeroTurn] = useState(-22);
   const [productFilter, setProductFilter] = useState('all');
   const toastTimer = useRef(null);
@@ -159,14 +160,14 @@ export default function HomeExperience() {
         {menuOpen && <nav className="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation"><p className="eyebrow">YOUR SKIN, YOUR STARTING POINT</p><a onClick={() => setMenuOpen(false)} href="#essentials">Shop essentials <span>01</span></a><a onClick={() => setMenuOpen(false)} href="#journey">Shop by concern</a><a onClick={() => setMenuOpen(false)} href="#formula">The formula</a><a onClick={() => setMenuOpen(false)} href="#routine">Build a routine</a><a onClick={() => setMenuOpen(false)} href="#science">Our approach <span>05</span></a></nav>}
       </header>
 
-      <main id="main" tabIndex={-1}>
+      <main id="main" tabIndex={-1} className={motionPaused ? "motion-paused" : ""}>
         <section className="hero immersive-hero" id="top">
           <div className="hero-copy"><p className="eyebrow"><span className="live-dot" /> SCIENCE MEETS YOUR EVERYDAY</p><h1>Good science.<br />Great skin.<br /><em>Your kind of care.</em></h1><p>Dermatologist-developed essentials. Thoughtful ingredients. A routine that feels like you.</p><div className="hero-actions"><a className="button dark" href="#essentials">Shop the essentials <span>↗</span></a><a className="text-link" href="#journey">Find my skin match →</a></div><div className="hero-assurance"><span>✳</span><p>Created by dermatologists.<br /><strong>Made for real skin.</strong></p></div></div>
-          <div className="hero-lab" onPointerMove={event => { if (event.pointerType === 'mouse' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) { const box = event.currentTarget.getBoundingClientRect(); setHeroTurn(((event.clientX - box.left) / box.width - .5) * 65); } }} onPointerLeave={() => setHeroTurn(-22)}>
+          <div className="hero-lab" onPointerMove={event => { if (!motionPaused && event.pointerType === 'mouse' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) { const box = event.currentTarget.getBoundingClientRect(); setHeroTurn(((event.clientX - box.left) / box.width - .5) * 65); } }} onPointerLeave={() => setHeroTurn(-22)}>
             <div className="lab-word" aria-hidden="true">SKIN<br />IN MOTION</div><div className="lab-orbit orbit-one" /><div className="lab-orbit orbit-two" /><div className="gel-drop drop-one" /><div className="gel-drop drop-two" />
             <div className="hero-vessel" style={{ '--angle': `${heroTurn}deg` }}><Sculpture /></div>
             <span className="lab-tag tag-one">☀ SPF 50+<small>YOUR DAILY DEFENCE</small></span><span className="lab-tag tag-two">H₂O<small>HYDRATION, IN EVERY LAYER</small></span>
-            <div className="lab-floor" /><div className="lab-bottom"><span>01 / PACKAGING CONCEPT • EXPLORE BELOW</span><a href="#formula" aria-label="Explore the interactive formula">↓</a></div>
+            <button className="motion-toggle" aria-pressed={motionPaused} onClick={() => setMotionPaused(value => !value)}>{motionPaused ? "Resume ambient motion" : "Pause ambient motion"}</button><div className="lab-floor" /><div className="lab-bottom"><span>01 / PACKAGING CONCEPT • EXPLORE BELOW</span><a href="#formula" aria-label="Explore the interactive formula">↓</a></div>
           </div>
           <div className="hero-bottom"><span>SKINCARE, WITH A LITTLE MORE FEELING.</span><span>SCROLL TO DISCOVER ↓</span></div>
         </section>
@@ -184,14 +185,8 @@ export default function HomeExperience() {
         </section>
 
         <section className="section formula" id="formula">
-          <div className="formula-intro"><p className="eyebrow">Feel the science <span>03</span></p><div><h2>A formula you can<br /><em>move through.</em></h2><p>Explore the layers inside our everyday UV veil. Rotate the 3D concept with the slider, or tap an ingredient. Packaging visualization; see the product page for the actual pack.</p></div></div>
-          <div className="formula-stage">
-            <div className="formula-copy left"><small>01</small><strong>Water-light</strong><span>Comfortable daily wear with no heavy finish.</span></div><div className="formula-copy right"><small>02</small><strong>Barrier-minded</strong><span>Hyaluronic acid and niacinamide support a hydrated feel.</span></div>
-            <div className="product-shadow" /><div className="formula-vessel" style={{ '--angle': `${rotation}deg` }}><Sculpture /></div>
-            {Object.keys(formulaDetails).map((id) => <button key={id} className={`hotspot ${id} ${activeDetail === id ? 'selected' : ''}`} onClick={() => setActiveDetail(id)}><b>+</b>{id === 'protection' ? 'UV veil' : id === 'hydration' ? 'Hydration' : 'Finish'}</button>)}
-            <div className="formula-detail"><p>{detail.number}</p><h3>{detail.title}</h3><span>{detail.text}</span><a href="/products/aqua-sunscreen-gel-spf-50-pa-3plus">See product details ↗</a></div>
-            <label className="rotation">Rotate the bottle<input aria-label="Rotate the bottle" type="range" min="-180" max="180" value={rotation} onChange={(event) => setRotation(event.target.value)} /></label>
-          </div>
+          <div className="formula-intro"><p className="eyebrow">Feel the science <span>03</span></p><div><h2>A formula you can<br /><em>move through.</em></h2><p>Explore the layers inside our everyday UV veil. Drag to rotate the 3D concept, then explore each formula layer. Packaging visualization; see the product page for the actual pack.</p></div></div>
+          <ProductStage activeDetail={activeDetail} detail={detail} onSelect={setActiveDetail}><Sculpture /></ProductStage>
         </section>
 
         <section className="section editorial"><div className="editorial-visual"><p>fresh start<br />energy</p><div className="wash-bottle"><small>SKINAA</small><b>VITAMIN C</b><small>FACE WASH</small></div></div><div><p className="eyebrow">Not another routine <span>04</span></p><h2>Care that fits<br /><em>the day you’re having.</em></h2><p className="body-copy">From a 30-second morning reset to the “my skin needs a minute” evening, every SKINAA step gives you room to show up as you are.</p><blockquote>“<br /><span>Consistency starts with products you actually want to use.</span><small>— The SKINAA point of view</small></blockquote><a className="button outline" href="/products/vitamin-c-face-wash">Start fresh ↗</a></div></section>
