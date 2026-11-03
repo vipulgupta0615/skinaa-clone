@@ -1,0 +1,6 @@
+export const products = {
+  'aqua-sunscreen-gel-spf-50-pa-3plus': { name: 'Aqua SPF 50+ Gel', category: 'Daily protection', price: 489, image: 'aqua', ingredient: 'Hyaluronic acid', description: 'Lightweight broad-spectrum protection with a hydrating gel texture.', step: 'Protect', pairing: 'Complete your morning routine with a dedicated sunscreen step.' },
+  'vitamin-c-face-wash': { name: 'Vitamin C Face Wash', category: 'Fresh beginnings', price: 341, image: 'vitamin-c', ingredient: 'Vitamin C', description: 'An everyday cleanser for a fresh start to your skincare ritual.', step: 'Cleanse', pairing: 'Start your morning or evening routine with cleansing, then follow with moisturizer.' },
+  'moisturizing-gel-oily-skin': { name: 'Niacinamide Gel Moisturizer', category: 'Everyday hydration', price: 338, image: 'niacinamide', ingredient: 'Niacinamide', description: 'A lightweight gel moisturizer for breathable hydration.', step: 'Moisturize', pairing: 'A moisturizing step for your morning or evening routine.' },
+  'ocevia-brightening-cream': { name: 'Ocevia Brightening Cream', category: 'Targeted care', price: 476, ingredient: 'Brightening care', description: 'A targeted skincare step for uneven-looking tone.', step: 'Treat', pairing: 'Build a considered routine around your skin. Follow the product label for use.' }
+};
