@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000').replace(/\/$/, '');
 
 const concerns = {
   clarity: { number: '01', label: 'Calm the breakout cycle', eyebrow: 'For breakout-prone days', title: 'Clarity, without the stripping.', body: 'A barrier-first pairing that clears the noise, then keeps hydration close.', footer: 'Niacinamide + gentle cleansing', link: 'https://shop.skinaa.com/products/moisturizing-gel-oily-skin', color: '#1834ac' },
@@ -69,7 +69,7 @@ export default function HomeExperience() {
     const payload = { timeOfDay, steps: [...selectedSteps], total };
     try {
       const response = await fetch(`${API_URL}/api/routines`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-      if (!response.ok) throw new Error('Unable to save routine');
+      if (!response.ok || !(await response.json()).saved) throw new Error('Unable to save routine');
       showToast('Your ritual is saved. You can pick it up any time.');
     } catch {
       window.sessionStorage.setItem('skinaa-routine', JSON.stringify(payload));
@@ -81,11 +81,11 @@ export default function HomeExperience() {
     event.preventDefault();
     try {
       const response = await fetch(`${API_URL}/api/subscribers`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-      if (!response.ok) throw new Error('Unable to subscribe');
+      if (!response.ok || !(await response.json()).saved) throw new Error('Unable to subscribe');
       setEmail('');
       showToast('You’re on the SKINAA list. See you soon.');
     } catch {
-      showToast('Thanks — your note is ready for the live SKINAA list.');
+      showToast('Subscription could not be saved. Please try again later.');
     }
   }
 
