@@ -40,6 +40,9 @@ function Toast({ message }) {
 }
 
 export default function HomeExperience() {
+  const [journeyTime, setJourneyTime] = useState('AM');
+  const [journeyDepth, setJourneyDepth] = useState('simple');
+  const [savedRoutine, setSavedRoutine] = useState(false);
   const [activeConcern, setActiveConcern] = useState('clarity');
   const [activeDetail, setActiveDetail] = useState('protection');
   const [selectedSteps, setSelectedSteps] = useState(new Set(['cleanser', 'moisturize', 'protect']));
@@ -79,6 +82,7 @@ export default function HomeExperience() {
     if (saved) {
       try {
         const routine = JSON.parse(saved);
+        setSavedRoutine(true);
         if (Array.isArray(routine.steps)) setSelectedSteps(new Set(routine.steps.filter(id => routineProducts.some(p => p.id === id))));
         if (['AM', 'PM'].includes(routine.timeOfDay)) setTimeOfDay(routine.timeOfDay);
       } catch { /* Ignore outdated saved routines. */ }
@@ -99,6 +103,14 @@ export default function HomeExperience() {
     });
   }
 
+  const recommendedIds = ['cleanser', 'moisturize', ...(journeyTime === 'AM' ? ['protect'] : []), ...(journeyDepth === 'complete' && activeConcern === 'even' ? ['treat'] : [])];
+  const recommended = routineProducts.filter(item => recommendedIds.includes(item.id));
+  const recommendationTotal = recommended.reduce((sum, item) => sum + item.price, 0);
+  function applyJourney() {
+    setTimeOfDay(journeyTime);
+    setSelectedSteps(new Set(recommendedIds));
+    showToast('Your suggested steps are ready to customize.');
+  }
   const concern = concerns[activeConcern];
   const detail = formulaDetails[activeDetail];
   const total = useMemo(() => routineProducts.filter((item) => selectedSteps.has(item.id)).reduce((sum, item) => sum + item.price, 0), [selectedSteps]);
@@ -121,6 +133,7 @@ export default function HomeExperience() {
     if (!selectedSteps.size) return showToast('Choose at least one ritual step first.');
     const payload = { timeOfDay, steps: [...selectedSteps], total };
     window.localStorage.setItem('skinaa-routine', JSON.stringify(payload));
+    setSavedRoutine(true);
     showToast('Your routine is saved on this device.');
     try {
       const response = await fetch(`${API_URL}/api/routines`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -182,6 +195,7 @@ export default function HomeExperience() {
             <div className="concerns" role="group" aria-label="Skin concerns">{Object.entries(concerns).map(([id, item]) => <button key={id} className={activeConcern === id ? 'selected' : ''} onClick={() => setActiveConcern(id)} aria-pressed={activeConcern === id}><small>{item.number}</small>{item.label}<b>↗</b></button>)}</div>
             <article className="match-card" aria-live="polite" style={{ background: concern.color }}><div className="match-orb"><i /><i /><span>+<br />{activeConcern === 'clarity' ? 'B3' : activeConcern === 'glow' ? 'C' : activeConcern === 'shield' ? 'SPF' : 'CARE'}</span></div><div><p className="eyebrow">{concern.eyebrow}</p><h3>{concern.title}</h3><p>{concern.body}</p><a className="under-link" href={concern.link}>See your edit →</a></div><small>{concern.footer}</small></article>
           </div>
+          <div className="journey-planner"><div className="journey-preferences"><p className="eyebrow">02 / MAKE IT FIT YOUR DAY</p><h3>Your pace. Your ritual.</h3><fieldset><legend>When is your ritual?</legend>{['AM','PM'].map(time => <button key={time} aria-pressed={journeyTime === time} onClick={() => setJourneyTime(time)}>{time === 'AM' ? '☀ Morning' : '☾ Evening'}</button>)}</fieldset><fieldset><legend>How do you like to start?</legend>{[['simple','Keep it simple'],['complete','Room for targeted care']].map(([id,label]) => <button key={id} aria-pressed={journeyDepth === id} onClick={() => setJourneyDepth(id)}>{label}</button>)}</fieldset></div><div className="journey-recommendation" aria-live="polite"><p className="eyebrow">03 / YOUR STARTING POINT</p><h3>{recommended.length} steps, thoughtfully paired.</h3><p>{journeyTime === 'AM' ? 'Cleanse, hydrate and protect: a practical morning foundation.' : 'Cleanse and moisturize: a simple evening foundation.'} {journeyDepth === 'complete' && activeConcern === 'even' ? 'A targeted-care step is included for your tone-focused edit.' : `Explore ${activeConcern === 'glow' ? 'Vitamin C Face Wash' : activeConcern === 'shield' ? 'Aqua SPF 50+ Gel' : activeConcern === 'even' ? 'Ocevia Brightening Cream' : 'Niacinamide Gel'} as your concern-led highlight.`}</p><ol>{recommended.map(item => <li key={item.id}><span>{item.title}</span><strong>{item.product}</strong><small>₹{item.price}</small></li>)}</ol><div className="journey-summary"><strong>₹{recommendationTotal.toLocaleString('en-IN')}</strong><a className="button dark" href="#routine" onClick={applyJourney}>Customize these steps →</a></div><small>A starting point based on your choices, not a skin diagnosis. Check each product’s details before use.</small></div></div>
         </section>
 
         <section className="section formula" id="formula">
@@ -191,7 +205,7 @@ export default function HomeExperience() {
 
         <section className="section editorial"><div className="editorial-visual"><p>fresh start<br />energy</p><div className="wash-bottle"><small>SKINAA</small><b>VITAMIN C</b><small>FACE WASH</small></div></div><div><p className="eyebrow">Not another routine <span>04</span></p><h2>Care that fits<br /><em>the day you’re having.</em></h2><p className="body-copy">From a 30-second morning reset to the “my skin needs a minute” evening, every SKINAA step gives you room to show up as you are.</p><blockquote>“<br /><span>Consistency starts with products you actually want to use.</span><small>— The SKINAA point of view</small></blockquote><a className="button outline" href="/products/vitamin-c-face-wash">Start fresh ↗</a></div></section>
 
-        <section className="section routine" id="routine"><div><p className="eyebrow">Make it yours <span>05</span></p><h2>Build a little<br /><em>ritual.</em></h2><p className="body-copy">Tap the steps you want to keep close. We’ll hold the sequence for you.</p></div><div className="routine-panel"><div className="time-switch"><button className={timeOfDay === 'AM' ? 'selected' : ''} aria-pressed={timeOfDay === 'AM'} onClick={() => chooseTime('AM')}>AM</button><button className={timeOfDay === 'PM' ? 'selected' : ''} aria-pressed={timeOfDay === 'PM'} onClick={() => chooseTime('PM')}>PM</button></div>{routineProducts.filter(item => timeOfDay === 'AM' || item.id !== 'protect').map((item) => <button className={`routine-step ${selectedSteps.has(item.id) ? 'selected' : ''}`} aria-pressed={selectedSteps.has(item.id)} onClick={() => toggleRoutineStep(item.id)} key={item.id}><b className={item.tone}>{item.icon}</b><span><small>STEP {item.step}</small><strong>{item.title}</strong><em>{item.product}</em></span><i>{selectedSteps.has(item.id) ? '✓' : '+'}</i></button>)}<div className="routine-total"><div><small>{selectedSteps.size}-step {timeOfDay === 'AM' ? 'morning' : 'evening'} ritual</small><strong>₹{total.toLocaleString('en-IN')}</strong></div><p>{selectedSteps.size ? 'A simple, barrier-friendly edit for everyday consistency.' : 'Choose one small step to start.'}</p><button className="button dark" onClick={saveRoutine}>Save this routine <span>→</span></button><div className="routine-links">{routineProducts.filter(item => selectedSteps.has(item.id)).map(item => <a key={item.id} href={item.id === 'cleanser' ? productCards[1].link : item.id === 'protect' ? productCards[0].link : item.id === 'moisturize' ? productCards[2].link : '/products/ocevia-brightening-cream'}>Shop {item.title.toLowerCase()} ↗</a>)}</div><small>Saved on this device. Explore each step without leaving SKINAA.</small></div></div></section>
+        <section className="section routine" id="routine"><div><p className="eyebrow">Make it yours <span>05</span></p><h2>Build a little<br /><em>ritual.</em></h2><p className="body-copy">Tap the steps you want to keep close. We’ll hold the sequence for you.</p>{savedRoutine && <p className="saved-routine-note" role="status">✓ You have a saved routine on this device. Save again to update it.</p>}<div className="routine-map" aria-label="Your selected routine steps">{routineProducts.filter(item => selectedSteps.has(item.id)).map((item,index) => <div key={item.id}><span>{index + 1}</span><p>{item.title}<small>{item.product}</small></p></div>)}</div></div><div className="routine-panel"><div className="time-switch"><button className={timeOfDay === 'AM' ? 'selected' : ''} aria-pressed={timeOfDay === 'AM'} onClick={() => chooseTime('AM')}>AM</button><button className={timeOfDay === 'PM' ? 'selected' : ''} aria-pressed={timeOfDay === 'PM'} onClick={() => chooseTime('PM')}>PM</button></div>{routineProducts.filter(item => timeOfDay === 'AM' || item.id !== 'protect').map((item) => <button className={`routine-step ${selectedSteps.has(item.id) ? 'selected' : ''}`} aria-pressed={selectedSteps.has(item.id)} onClick={() => toggleRoutineStep(item.id)} key={item.id}><b className={item.tone}>{item.icon}</b><span><small>STEP {item.step}</small><strong>{item.title}</strong><em>{item.product}</em></span><i>{selectedSteps.has(item.id) ? '✓' : '+'}</i></button>)}<div className="routine-total"><div><small>{selectedSteps.size}-step {timeOfDay === 'AM' ? 'morning' : 'evening'} ritual</small><strong>₹{total.toLocaleString('en-IN')}</strong></div><p>{selectedSteps.size ? 'A simple, barrier-friendly edit for everyday consistency.' : 'Choose one small step to start.'}</p><button className="button dark" onClick={saveRoutine}>Save this routine <span>→</span></button><div className="routine-links">{routineProducts.filter(item => selectedSteps.has(item.id)).map(item => <a key={item.id} href={item.id === 'cleanser' ? productCards[1].link : item.id === 'protect' ? productCards[0].link : item.id === 'moisturize' ? productCards[2].link : '/products/ocevia-brightening-cream'}>Shop {item.title.toLowerCase()} ↗</a>)}</div><small>Saved on this device. Explore each step without leaving SKINAA.</small></div></div></section>
 
         <section className="section science-note" id="science"><p className="eyebrow">THOUGHTFULLY FORMULATED / 06</p><h2>Your skin is personal.<br /><em>Your care should be, too.</em></h2><div className="science-grid"><article><span>01 / EXPERTISE</span><h3>Science at the start.</h3><p>Get to know the ingredients in your daily care and how each step fits into your routine.</p><a href="#formula">Explore the formula ↓</a></article><article><span>02 / TRANSPARENCY</span><h3>Know your formula.</h3><p>Explore product descriptions, key ingredients and routine pairings to choose your next step.</p><a href="#essentials">Explore the essentials ↗</a></article><article><span>03 / CONSISTENCY</span><h3>A ritual, not a race.</h3><p>Start with a few considered steps. Build a routine around your skin and the time you have.</p><a href="#routine">Make it yours ↗</a></article></div></section>
 
