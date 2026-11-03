@@ -52,6 +52,26 @@ export default function HomeExperience() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const searchTrigger = useRef(null);
+  const menuTrigger = useRef(null);
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    if (!menuOpen && !searchOpen) return;
+    function dismiss(event) {
+      if (event.type === 'keydown' && event.key !== 'Escape') return;
+      if (event.type === 'pointerdown' && headerRef.current?.contains(event.target)) return;
+      if (event.type === 'keydown') (searchOpen ? searchTrigger : menuTrigger).current?.focus();
+      setMenuOpen(false);
+      setSearchOpen(false);
+    }
+    document.addEventListener('keydown', dismiss);
+    document.addEventListener('pointerdown', dismiss);
+    return () => {
+      document.removeEventListener('keydown', dismiss);
+      document.removeEventListener('pointerdown', dismiss);
+    };
+  }, [menuOpen, searchOpen]);
 
   useEffect(() => {
     const saved = window.localStorage.getItem('skinaa-routine');
@@ -127,19 +147,19 @@ export default function HomeExperience() {
       <a className="skip-link" href="#main">Skip to content</a>
       <div className="announcement"><span>Free shipping over ₹799</span><i /><span>Dermatologist-developed care</span><i /><span>Made for real skin days</span></div>
 
-      <header className="site-header">
+      <header className="site-header" ref={headerRef}>
         <a className="brand" href="#top" aria-label="SKINAA home"><span>✦</span>SKINAA</a>
         <nav className="desktop-nav" aria-label="Primary navigation"><a href="#essentials">Shop essentials</a><a href="#journey">Shop by concern</a><a href="#formula">The formula</a><a href="#routine">Build a routine</a><a href="/#science">Our approach ↓</a></nav>
         <div className="header-actions">
-          <button className="icon-button" aria-label="Search products" onClick={() => setSearchOpen((open) => !open)}>⌕</button>
+          <button ref={searchTrigger} className="icon-button" aria-label="Search products" aria-controls="product-search" aria-expanded={searchOpen} onClick={() => { setSearchOpen(open => !open); setMenuOpen(false); }}><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
           <a className="bag icon-button" href="/#routine" aria-label="View your routine">↗</a>
-          <button className={`menu-button ${menuOpen ? 'active' : ''}`} aria-label="Open menu" aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}><i /><i /></button>
+          <button ref={menuTrigger} className={`menu-button ${menuOpen ? 'active' : ''}`} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-controls="mobile-navigation" aria-expanded={menuOpen} onClick={() => { setMenuOpen(open => !open); setSearchOpen(false); }}><i /><i /></button>
         </div>
-        {searchOpen && <div className="search-panel"><label htmlFor="shop-search">Find a formula</label><input id="shop-search" autoFocus value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search sunscreen, cleanse, hydration…" /><div className="search-results" aria-live="polite">{productCards.filter(product => `${product.name} ${product.description} ${product.color === 'blue' ? 'sunscreen protect' : product.color === 'yellow' ? 'cleanse glow' : 'hydrate moisturizer'}`.toLowerCase().includes(searchTerm.trim().toLowerCase())).map(product => <a key={product.name} href={product.link}>{product.name}<span>{product.price} →</span></a>)}{!productCards.some(product => `${product.name} ${product.description} ${product.color === 'blue' ? 'sunscreen protect' : product.color === 'yellow' ? 'cleanse glow' : 'hydrate moisturizer'}`.toLowerCase().includes(searchTerm.trim().toLowerCase())) && <p>No matches yet. Try “sunscreen”, “cleanse” or “hydrate”.</p>}</div><button onClick={() => setSearchOpen(false)} aria-label="Close search">Close ×</button></div>}
-        {menuOpen && <nav className="mobile-nav" aria-label="Mobile navigation"><a onClick={() => setMenuOpen(false)} href="#journey">Shop by concern</a><a onClick={() => setMenuOpen(false)} href="#formula">The formula</a><a onClick={() => setMenuOpen(false)} href="#routine">Build a routine</a><a href="/#essentials">Shop all ↗</a></nav>}
+        {searchOpen && <div className="search-panel" id="product-search"><label htmlFor="shop-search">Find a formula</label><input id="shop-search" autoFocus value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search sunscreen, cleanse, hydration…" /><div className="search-results" aria-live="polite">{productCards.filter(product => `${product.name} ${product.description} ${product.color === 'blue' ? 'sunscreen protect' : product.color === 'yellow' ? 'cleanse glow' : 'hydrate moisturizer'}`.toLowerCase().includes(searchTerm.trim().toLowerCase())).map(product => <a key={product.name} href={product.link}>{product.name}<span>{product.price} →</span></a>)}{!productCards.some(product => `${product.name} ${product.description} ${product.color === 'blue' ? 'sunscreen protect' : product.color === 'yellow' ? 'cleanse glow' : 'hydrate moisturizer'}`.toLowerCase().includes(searchTerm.trim().toLowerCase())) && <p>No matches yet. Try “sunscreen”, “cleanse” or “hydrate”.</p>}</div><button onClick={() => { setSearchOpen(false); searchTrigger.current?.focus(); }} aria-label="Close search">Close ×</button></div>}
+        {menuOpen && <nav className="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation"><p className="eyebrow">YOUR SKIN, YOUR STARTING POINT</p><a onClick={() => setMenuOpen(false)} href="#essentials">Shop essentials <span>01</span></a><a onClick={() => setMenuOpen(false)} href="#journey">Shop by concern</a><a onClick={() => setMenuOpen(false)} href="#formula">The formula</a><a onClick={() => setMenuOpen(false)} href="#routine">Build a routine</a><a onClick={() => setMenuOpen(false)} href="#science">Our approach <span>05</span></a></nav>}
       </header>
 
-      <main id="main">
+      <main id="main" tabIndex={-1}>
         <section className="hero immersive-hero" id="top">
           <div className="hero-copy"><p className="eyebrow"><span className="live-dot" /> SCIENCE MEETS YOUR EVERYDAY</p><h1>Good science.<br />Great skin.<br /><em>Your kind of care.</em></h1><p>Dermatologist-developed essentials. Thoughtful ingredients. A routine that feels like you.</p><div className="hero-actions"><a className="button dark" href="#essentials">Shop the essentials <span>↗</span></a><a className="text-link" href="#journey">Find my skin match →</a></div><div className="hero-assurance"><span>✳</span><p>Created by dermatologists.<br /><strong>Made for real skin.</strong></p></div></div>
           <div className="hero-lab" onPointerMove={event => { if (event.pointerType === 'mouse' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) { const box = event.currentTarget.getBoundingClientRect(); setHeroTurn(((event.clientX - box.left) / box.width - .5) * 65); } }} onPointerLeave={() => setHeroTurn(-22)}>
