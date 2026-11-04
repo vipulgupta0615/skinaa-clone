@@ -49,3 +49,7 @@ Without a MongoDB connection string, the API deliberately stays usable in previe
 4. Deploy the service. Render will run `npm ci` and `npm start` inside `backend/`; its health probe is `/api/health`.
 
 For a production change, update Render’s `FRONTEND_ORIGIN` first, then update Vercel’s `NEXT_PUBLIC_API_URL` and redeploy the Vercel project. This avoids allowing arbitrary origins or exposing database credentials to the browser.
+
+## Assignment scope
+
+This project demonstrates product discovery, interactive skincare routines and a local demo bag. It does not accept payments or create purchase orders. No payment-provider keys are required.
