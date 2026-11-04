@@ -1,0 +1,99 @@
+.store-mobile-menu {
+  display: none;
+}
+
+.store-mobile-menu summary {
+  display: flex;
+  min-width: 56px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  list-style: none;
+  border: 1px solid rgba(29, 49, 43, .2);
+  border-radius: 999px;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.store-mobile-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.store-mobile-menu summary i {
+  width: 10px;
+  height: 1px;
+  background: currentColor;
+}
+
+.store-mobile-menu > nav {
+  position: absolute;
+  z-index: 25;
+  top: calc(100% + 10px);
+  right: 16px;
+  display: grid;
+  width: min(320px, calc(100vw - 32px));
+  gap: 2px;
+  padding: 14px;
+  border: 1px solid rgba(29, 49, 43, .12);
+  background: var(--paper);
+  box-shadow: 0 18px 42px rgba(29, 49, 43, .14);
+}
+
+.store-mobile-menu > nav a {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  color: var(--ink);
+  font: 20px/1.2 var(--serif);
+  text-decoration: none;
+}
+
+.store-mobile-menu > nav a:hover,
+.store-mobile-menu > nav a:focus-visible {
+  background: var(--skinaa-sage);
+}
+
+.store-mobile-menu summary:focus-visible,
+.store-mobile-menu > nav a:focus-visible {
+  outline: 2px solid #426d58;
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .store-page-header {
+    gap: 10px;
+  }
+
+  .store-page-header .desktop-nav {
+    display: none;
+  }
+
+  .store-mobile-menu {
+    position: static;
+    display: block;
+    margin-left: auto;
+  }
+
+  .store-page-header .header-actions {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .site-header .bag {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+
+  .store-page-header .bag {
+    display: grid;
+  }
+}
