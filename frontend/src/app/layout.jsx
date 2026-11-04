@@ -1,4 +1,5 @@
 import './globals.css';
+import MotionPreferences from '../components/MotionPreferences';
 
 export const metadata = {
   title: 'SKINAA — Skin, in motion',
@@ -10,7 +11,7 @@ export const viewport = { themeColor: '#eef1e4' };
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><MotionPreferences />{children}</body>
     </html>
   );
 }

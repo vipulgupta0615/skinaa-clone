@@ -13,6 +13,7 @@ export default function ProductStage({ children, activeDetail, detail, onSelect 
   const [angle, setAngle] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const [pageVisible, setPageVisible] = useState(true);
   const [visible, setVisible] = useState(false);
   const [dragging, setDragging] = useState(false);
   const stage = useRef(null);
@@ -21,16 +22,19 @@ export default function ProductStage({ children, activeDetail, detail, onSelect 
 
   useEffect(() => {
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => { setReduced(preference.matches); if (preference.matches) setPlaying(false); };
+    const update = () => { const limited = preference.matches || navigator.connection?.saveData || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || (navigator.deviceMemory && navigator.deviceMemory <= 4); setReduced(Boolean(limited)); if (limited) setPlaying(false); };
+    const visibility = () => setPageVisible(!document.hidden);
+    document.addEventListener('visibilitychange', visibility);
+    visibility();
     update();
     preference.addEventListener('change', update);
-    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: .1 });
-    observer.observe(stage.current);
-    return () => { preference.removeEventListener('change', update); observer.disconnect(); };
+    const observer = 'IntersectionObserver' in window ? new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: .1 }) : null;
+    if (observer) observer.observe(stage.current); else setVisible(true);
+    return () => { preference.removeEventListener('change', update); observer?.disconnect(); document.removeEventListener('visibilitychange', visibility); };
   }, []);
 
   useEffect(() => {
-    if (!playing || reduced || !visible) return;
+    if (!playing || reduced || !visible || !pageVisible) return;
     let frame;
     let last = 0;
     function tick(time) {
@@ -45,7 +49,7 @@ export default function ProductStage({ children, activeDetail, detail, onSelect 
     }
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [playing, reduced, visible]);
+  }, [playing, reduced, visible, pageVisible]);
 
   function endDrag(event) {
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
@@ -65,6 +69,6 @@ export default function ProductStage({ children, activeDetail, detail, onSelect 
     </div>
     <div className="layer-controls" role="group" aria-label="Explore formula layers">{Object.entries(layers).map(([id, item]) => <button key={id} aria-pressed={activeDetail === id} onClick={() => onSelect(id)}><span aria-hidden="true">{item.symbol}</span>{item.label}</button>)}</div>
     <div className="formula-detail" aria-live="polite" aria-atomic="true"><div key={activeDetail} className="detail-transition"><p className="eyebrow">{detail.number}</p><h3>{detail.title}</h3><p>{detail.text}</p><a href="/products/aqua-sunscreen-gel-spf-50-pa-3plus">Explore this product →</a></div></div>
-    <div className="rotation-console"><label htmlFor="product-rotation">Rotate the product <output>{Math.round(angle)}°</output></label><input id="product-rotation" type="range" min="-180" max="180" step="1" value={Math.round(angle)} onChange={event => { setPlaying(false); setAngle(Number(event.target.value)); }} /><div><button onClick={() => { setPlaying(false); setAngle(0); }}>Reset view</button><button disabled={reduced} aria-pressed={playing} onClick={() => setPlaying(current => !current)}>{playing ? 'Pause rotation' : 'Auto-rotate'}</button></div><small>{reduced ? 'Reduced motion enabled. Drag or use the slider to explore.' : 'Drag sideways to explore · Scroll vertically to continue'}</small></div>
+    <div className="rotation-console"><label htmlFor="product-rotation">Rotate the product <output>{Math.round(angle)}°</output></label><input id="product-rotation" type="range" min="-180" max="180" step="1" value={Math.round(angle)} onChange={event => { setPlaying(false); setAngle(Number(event.target.value)); }} /><div><button onClick={() => { setPlaying(false); setAngle(0); }}>Reset view</button><button disabled={reduced} aria-pressed={playing} onClick={() => setPlaying(current => !current)}>{playing ? 'Pause rotation' : 'Auto-rotate'}</button></div><small>{reduced ? 'Adaptive motion enabled. Drag or use the slider to explore.' : 'Drag sideways to explore · Scroll vertically to continue'}</small></div>
   </div>;
 }

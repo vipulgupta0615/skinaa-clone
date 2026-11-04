@@ -51,7 +51,7 @@ export default function HomeExperience() {
   const [selectedSteps, setSelectedSteps] = useState(new Set(['cleanser', 'moisturize', 'protect']));
   const [timeOfDay, setTimeOfDay] = useState('AM');
   const [motionPaused, setMotionPaused] = useState(false);
-  const [heroTurn, setHeroTurn] = useState(-22);
+  const heroVessel = useRef(null);
   const [productFilter, setProductFilter] = useState('all');
   const toastTimer = useRef(null);
   const [email, setEmail] = useState('');
@@ -81,7 +81,8 @@ export default function HomeExperience() {
   }, [menuOpen, searchOpen]);
 
   useEffect(() => {
-    const saved = window.localStorage.getItem('skinaa-routine');
+    let saved;
+    try { saved = window.localStorage.getItem('skinaa-routine'); } catch {}
     if (saved) {
       try {
         const routine = JSON.parse(saved);
@@ -90,6 +91,7 @@ export default function HomeExperience() {
         if (['AM', 'PM'].includes(routine.timeOfDay)) setTimeOfDay(routine.timeOfDay);
       } catch { /* Ignore outdated saved routines. */ }
     }
+    if (!('IntersectionObserver' in window)) return;
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {
       if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }
     }), { threshold: 0.08 });
@@ -135,7 +137,7 @@ export default function HomeExperience() {
   async function saveRoutine() {
     if (!selectedSteps.size) return showToast('Choose at least one ritual step first.');
     const payload = { timeOfDay, steps: [...selectedSteps], total };
-    window.localStorage.setItem('skinaa-routine', JSON.stringify(payload));
+    try { window.localStorage.setItem('skinaa-routine', JSON.stringify(payload)); } catch { showToast('Saving is unavailable in this browser. Your current selections remain visible.'); return; }
     setSavedRoutine(true);
     showToast('Your routine is saved on this device.');
     try {
@@ -179,9 +181,9 @@ export default function HomeExperience() {
       <main id="main" tabIndex={-1} className={motionPaused ? "motion-paused" : ""}>
         <section className="hero immersive-hero" id="top">
           <div className="hero-copy"><p className="eyebrow"><span className="live-dot" /> SCIENCE MEETS YOUR EVERYDAY</p><h1>Good science.<br />Great skin.<br /><em>Your kind of care.</em></h1><p>Dermatologist-developed essentials. Thoughtful ingredients. A routine that feels like you.</p><div className="hero-actions"><a className="button dark" href="#essentials">Shop the essentials <span>↗</span></a><a className="text-link" href="#journey">Find my skin match →</a></div><div className="hero-assurance"><span>✳</span><p>Created by dermatologists.<br /><strong>Made for real skin.</strong></p></div></div>
-          <div className="hero-lab" onPointerMove={event => { if (!motionPaused && event.pointerType === 'mouse' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) { const box = event.currentTarget.getBoundingClientRect(); setHeroTurn(((event.clientX - box.left) / box.width - .5) * 65); } }} onPointerLeave={() => setHeroTurn(-22)}>
+          <div className="hero-lab" onPointerMove={event => { if (!motionPaused && !document.documentElement.classList.contains('limited-motion') && event.pointerType === 'mouse' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) { const box = event.currentTarget.getBoundingClientRect(); heroVessel.current?.style.setProperty('--angle', `${((event.clientX - box.left) / box.width - .5) * 65}deg`); } }} onPointerLeave={() => heroVessel.current?.style.setProperty('--angle', '-22deg')}>
             <div className="lab-word" aria-hidden="true">SKIN<br />IN MOTION</div><div className="lab-orbit orbit-one" /><div className="lab-orbit orbit-two" /><div className="gel-drop drop-one" /><div className="gel-drop drop-two" />
-            <div className="hero-vessel" style={{ '--angle': `${heroTurn}deg` }}><Sculpture /></div>
+            <div ref={heroVessel} className="hero-vessel" style={{ '--angle': '-22deg' }}><Sculpture /></div>
             <span className="lab-tag tag-one">☀ SPF 50+<small>YOUR DAILY DEFENCE</small></span><span className="lab-tag tag-two">H₂O<small>HYDRATION, IN EVERY LAYER</small></span>
             <button className="motion-toggle" aria-pressed={motionPaused} onClick={() => setMotionPaused(value => !value)}>{motionPaused ? "Resume ambient motion" : "Pause ambient motion"}</button><div className="lab-floor" /><div className="lab-bottom"><span>01 / PACKAGING CONCEPT • EXPLORE BELOW</span><a href="#formula" aria-label="Explore the interactive formula">↓</a></div>
           </div>
@@ -190,7 +192,7 @@ export default function HomeExperience() {
 
         <section className="proof"><div><b>✳</b><strong>Dermatologist<br />developed</strong></div><div><b>4L+</b><span>happy skin stories<br />and counting</span></div><div><b>⌁</b><strong>Intentional,<br />evidence-led formulas</strong></div><a href="/#essentials">Shop the edit ↗</a></section>
 
-        <section className="section product-edit" id="essentials"><div className="heading"><div><p className="eyebrow">THE EVERYDAY EDIT / 01</p><h2>Small steps.<br /><em>Skin-changing rituals.</em></h2></div><p className="section-aside">Your daily essentials, thoughtfully formulated.<br />Find your first step here.</p></div><div className="filter-row" role="group" aria-label="Filter essentials">{[['all','All essentials'],['blue','Protect'],['yellow','Cleanse'],['green','Hydrate']].map(([id,label]) => <button key={id} aria-pressed={productFilter === id} onClick={() => setProductFilter(id)}>{label}</button>)}<span>FORMULAS WITH PURPOSE. ALWAYS.</span></div><div className="product-grid">{productCards.filter(p => productFilter === 'all' || productFilter === p.color).map((product) => <article className={`product-card ${product.color}`} key={product.name}><a className="product-image" href={product.link} aria-label={`View ${product.name}`}><span className="product-badge">{product.color === 'blue' ? 'DAILY DEFENCE' : product.color === 'yellow' ? 'FRESH START' : 'BARRIER CARE'}</span><img src={`/assets/${product.color === 'blue' ? 'aqua' : product.color === 'yellow' ? 'vitamin-c' : 'niacinamide'}.webp`} alt={product.name} width="533" height="533" loading="lazy" /><span className="image-arrow">↗</span></a><div className="product-info"><p>{product.index}</p><h3>{product.name}</h3><span>{product.description}</span><footer><strong>{product.price}</strong><a href={product.link}>View details ↗</a></footer><AddToCart slugs={[product.link.split('/').pop()]} /></div></article>)}</div><a className="button outline centred" href="/#essentials">Shop all skincare ↗</a><p className="shop-note">Explore ingredients and build your routine here. This is an assignment demo; purchases are not supported.</p></section>
+        <section className="section product-edit" id="essentials"><div className="heading"><div><p className="eyebrow">THE EVERYDAY EDIT / 01</p><h2>Small steps.<br /><em>Skin-changing rituals.</em></h2></div><p className="section-aside">Your daily essentials, thoughtfully formulated.<br />Find your first step here.</p></div><div className="filter-row" role="group" aria-label="Filter essentials">{[['all','All essentials'],['blue','Protect'],['yellow','Cleanse'],['green','Hydrate']].map(([id,label]) => <button key={id} aria-pressed={productFilter === id} onClick={() => setProductFilter(id)}>{label}</button>)}<span>FORMULAS WITH PURPOSE. ALWAYS.</span></div><div className="product-grid">{productCards.filter(p => productFilter === 'all' || productFilter === p.color).map((product) => <article className={`product-card ${product.color}`} key={product.name}><a className="product-image" href={product.link} aria-label={`View ${product.name}`}><span className="product-badge">{product.color === 'blue' ? 'DAILY DEFENCE' : product.color === 'yellow' ? 'FRESH START' : 'BARRIER CARE'}</span><img src={`/assets/${product.color === 'blue' ? 'aqua' : product.color === 'yellow' ? 'vitamin-c' : 'niacinamide'}.webp`} alt={product.name} width="533" height="533" loading="lazy" decoding="async" /><span className="image-arrow">↗</span></a><div className="product-info"><p>{product.index}</p><h3>{product.name}</h3><span>{product.description}</span><footer><strong>{product.price}</strong><a href={product.link}>View details ↗</a></footer><AddToCart slugs={[product.link.split('/').pop()]} /></div></article>)}</div><a className="button outline centred" href="/#essentials">Shop all skincare ↗</a><p className="shop-note">Explore ingredients and build your routine here. This is an assignment demo; purchases are not supported.</p></section>
 
         <section className="section journey" id="journey">
           <div className="heading"><p className="eyebrow">A little less guesswork <span>02</span></p><h2>Where do you want<br /><em>your skin to go?</em></h2></div>
