@@ -23,6 +23,7 @@ app.use(cors({
   }
 }));
 app.use(express.json({ limit: '50kb' }));
+require('./lib/checkout').registerCheckout(app);
 
 app.get('/api/health', (_req, res) => {
   res.json({
