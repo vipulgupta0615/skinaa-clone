@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import ProductStage from './ProductStage';
 import SkinJournal from './SkinJournal';
-import { AddToCart } from './Cart';
+import { AddToCart, BagLink } from './Cart';
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000').replace(/\/$/, '');
 
@@ -171,7 +171,7 @@ export default function HomeExperience() {
         <nav className="desktop-nav" aria-label="Primary navigation"><a href="#essentials">Shop essentials</a><a href="#journey">Shop by concern</a><a href="#formula">The formula</a><a href="#routine">Build a routine</a><a href="/#science">Our approach ↓</a></nav>
         <div className="header-actions">
           <button ref={searchTrigger} className="icon-button" aria-label="Search products" aria-controls="product-search" aria-expanded={searchOpen} onClick={() => { setSearchOpen(open => !open); setMenuOpen(false); }}><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
-          <a className="bag icon-button" href="/cart" aria-label="View shopping bag">↗</a>
+          <BagLink />
           <button ref={menuTrigger} className={`menu-button ${menuOpen ? 'active' : ''}`} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-controls="mobile-navigation" aria-expanded={menuOpen} onClick={() => { setMenuOpen(open => !open); setSearchOpen(false); }}><i /><i /></button>
         </div>
         {searchOpen && <div className="search-panel" id="product-search"><label htmlFor="shop-search">Find a formula</label><input id="shop-search" autoFocus value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search sunscreen, cleanse, hydration…" /><div className="search-results" aria-live="polite">{productCards.filter(product => `${product.name} ${product.description} ${product.color === 'blue' ? 'sunscreen protect' : product.color === 'yellow' ? 'cleanse glow' : 'hydrate moisturizer'}`.toLowerCase().includes(searchTerm.trim().toLowerCase())).map(product => <a key={product.name} href={product.link}>{product.name}<span>{product.price} →</span></a>)}{!productCards.some(product => `${product.name} ${product.description} ${product.color === 'blue' ? 'sunscreen protect' : product.color === 'yellow' ? 'cleanse glow' : 'hydrate moisturizer'}`.toLowerCase().includes(searchTerm.trim().toLowerCase())) && <p>No matches yet. Try “sunscreen”, “cleanse” or “hydrate”.</p>}</div><button onClick={() => { setSearchOpen(false); searchTrigger.current?.focus(); }} aria-label="Close search">Close ×</button></div>}

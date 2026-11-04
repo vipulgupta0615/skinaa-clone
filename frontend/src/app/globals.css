@@ -38,3 +38,4 @@ body{font-size:15px}section[id]{scroll-margin-top:90px}a,button,input{-webkit-ta
 .editorial-visual .wash-bottle b{font-size:22px;line-height:1.05;letter-spacing:-.04em;overflow-wrap:normal}
 .editorial-visual .wash-bottle small{font-size:8px;letter-spacing:.12em}
 @media(max-width:760px){.editorial-visual>p{top:34px;font-size:29px}.editorial-visual .wash-bottle{height:230px;bottom:38px;padding-top:58px}.editorial-visual .wash-bottle b{font-size:21px}}
+@media(max-width:620px){.bag{display:grid}}
