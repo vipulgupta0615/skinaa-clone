@@ -1,6 +1,6 @@
 # Performance and accessibility review
 
-The homepage production build reports about 115 kB first-load JavaScript. This is build output, not a Lighthouse score or a network timing measurement. Product photography uses local WebP assets totalling approximately 72 kB, explicit dimensions, lazy loading and asynchronous decoding. The retired 1.6 MB hero image is not referenced by the active frontend.
+The homepage production build reports about 115 kB first-load JavaScript. This is build output, not a Lighthouse score or a network timing measurement. Product photography uses actual local WebP assets totalling approximately 35.7 kB, explicit dimensions, lazy loading and asynchronous decoding. The retired 1.6 MB hero image is not referenced by the active frontend.
 
 The product visualization is CSS geometry: no model downloads, textures, WebGL engine or animation library. Hero pointer movement updates only the visual transform rather than React state for the entire homepage. Product auto-rotation is opt-in, limited to roughly 30 updates per second, suspended offscreen and stopped when the document is hidden.
 

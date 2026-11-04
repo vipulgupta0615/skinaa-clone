@@ -1,4 +1,6 @@
 import './globals.css';
+import './homepage-identity.css';
+import './store-responsive.css';
 import MotionPreferences from '../components/MotionPreferences';
 
 export const metadata = {

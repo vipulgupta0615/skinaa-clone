@@ -9,11 +9,12 @@ The homepage pairs botanical green and ivory with editorial typography and dimen
 - Concern choices update the story, ingredient cue and destination.
 - A CSS 3D cylinder supports full rotation through a keyboard-accessible range control. Ingredient buttons explain the formula.
 - AM/PM routines adjust the available steps, update totals, persist locally and expose individual product links. PM excludes sunscreen.
+- The bag count updates immediately when products are added or quantities change, and remains visible in the compact mobile header.
 - A mobile shopping bar keeps discovery accessible. Product discovery remains within this application. Product detail routes are local; purchasing is outside the assignment scope.
 
 ## Motion and performance
 
-CSS transforms supply depth without a WebGL dependency. IntersectionObserver reveals sections once. A reduced-motion preference disables animations and transitions, and disables pointer tracking. Official WebP product images are stored locally, sized explicitly and lazy loaded. The old full-screen raster hero is no longer requested. The production build reports 110 kB first-load JavaScript, compared with 109 kB previously.
+CSS transforms supply depth without a WebGL dependency. IntersectionObserver reveals sections once. A reduced-motion preference disables animations and transitions, and disables pointer tracking. Product images are locally optimized WebP, sized explicitly and lazy loaded. The old full-screen raster hero is no longer requested. The current production build reports 115 kB first-load JavaScript.
 
 ## Verification
 
